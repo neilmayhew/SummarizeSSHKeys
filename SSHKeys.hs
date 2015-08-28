@@ -1,5 +1,8 @@
 module SSHKeys where
 
+import QuietTesting
+
+import Test.HUnit
 import Text.Parsec hiding (Line)
 
 file = line `sepEndBy` newline <* eof
@@ -56,7 +59,7 @@ comma = char ','
 
 parseFile = runP file ()
 
-testData =
+testData = concat
     [ "ssh-dsa AAAAAAAA me@somewhere OK?\n"
     , "\n"
     , "opt1 ssh-dsa AAAAAAAA me@somewhere OK?\n"
@@ -64,4 +67,13 @@ testData =
     , "opt1,opt2 ssh-dsa AAAAAAAA me@somewhere OK?\n"
     , "opt1=\"a value\",opt2 ssh-dsa AAAAAAAA me@somewhere OK?" ]
 
-test = runP file () "testData" $ concat testData
+testResult = Right
+    [ Entry ([], "ssh-dsa","AAAAAAAA","me@somewhere OK?")
+    , EmptyLine
+    , Entry ([("opt1",Nothing)], "ssh-dsa","AAAAAAAA","me@somewhere OK?")
+    , Comment "A comment line"
+    , Entry ([("opt1",Nothing),("opt2",Nothing)], "ssh-dsa","AAAAAAAA","me@somewhere OK?")
+    , Entry ([("opt1",Just "a value"),("opt2",Nothing)], "ssh-dsa","AAAAAAAA","me@somewhere OK?") ]
+
+runTests = runTestTTquiet $ test
+    [ parseFile "testData" testData ~?= testResult ]
