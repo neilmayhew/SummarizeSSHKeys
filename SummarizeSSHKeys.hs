@@ -12,9 +12,13 @@ main = do
         Left e -> do
             hPutStrLn stderr (show e)
             exitFailure
-        Right keys -> do
-            forM_ keys $ \(o, k, h, c) -> do
-                putStrLn $ printf "%s %-5s %-10s %s" (summOpts o) (summKind k) (summHash h) c
+        Right lines -> do
+            forM_ lines $ \l -> do
+                case l of
+                    Entry (o, k, h, c) ->
+                        putStrLn $ printf "%s %-5s %-10s %s" (summOpts o) (summKind k) (summHash h) c
+                    _ ->
+                        return ()
 
 summOpts o = printf "[%d]" $ length o :: String
 

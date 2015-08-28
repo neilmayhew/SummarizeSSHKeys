@@ -1,11 +1,24 @@
 module SSHKeys where
 
-import Text.Parsec
+import Text.Parsec hiding (Line)
 
-file = do
-    line `sepEndBy` newline
+file = line `sepEndBy` newline <* eof
 
-line = do
+type Option = (String, Maybe String)
+
+data Line
+    = Entry ([Option], String, String, String)
+    | Comment String
+    | EmptyLine
+    deriving (Eq, Show)
+
+line = commentLine <|> emptyLine <|> entry
+
+commentLine = Comment <$> (char '#' *> spaces' *> comment)
+
+emptyLine = const EmptyLine <$> lookAhead newline
+
+entry = do
     o <- options
     spaces'
     k <- kind
@@ -13,7 +26,7 @@ line = do
     h <- hash
     spaces'
     c <- comment
-    return (o, k, h, c)
+    return $ Entry (o, k, h, c)
 
 options = do
     setting `sepBy` comma
@@ -45,7 +58,9 @@ parseFile = runP file ()
 
 testData =
     [ "ssh-dsa AAAAAAAA me@somewhere OK?\n"
+    , "\n"
     , "opt1 ssh-dsa AAAAAAAA me@somewhere OK?\n"
+    , "#  A comment line\n"
     , "opt1,opt2 ssh-dsa AAAAAAAA me@somewhere OK?\n"
     , "opt1=\"a value\",opt2 ssh-dsa AAAAAAAA me@somewhere OK?" ]
 
