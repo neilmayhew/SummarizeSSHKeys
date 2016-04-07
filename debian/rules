@@ -1,0 +1,8 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --buildsystem=haskell
+
+override_dh_auto_install:
+	touch summarize-ssh-keys.conf
+	dh_auto_install $(DH_INTERNAL_OPTIONS)

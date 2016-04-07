@@ -1,0 +1,5 @@
+summarize-ssh-keys (1.0.0.0) stable; urgency=low
+
+  * Initial release
+
+ -- Neil Mayhew <neil_mayhew@users.sourceforge.net>  Thu, 07 Apr 2016 11:05:31 -0600
