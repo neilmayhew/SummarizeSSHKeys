@@ -3,9 +3,8 @@ Maintainer: Neil Mayhew <neil_mayhew@users.sourceforge.net>
 Priority: extra
 Section: haskell
 Build-Depends: debhelper (>= 9),
- haskell-devscripts (>= 0.8),
- cdbs,
  ghc (>= 7.4),
+ cabal-install (>= 0.14),
  libghc-hunit-dev (>= 1.2),
  libghc-hunit-dev (<< 1.4),
  libghc-parsec3-dev (>= 2.0),

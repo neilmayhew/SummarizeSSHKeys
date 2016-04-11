@@ -1,8 +1,20 @@
 #!/usr/bin/make -f
 
-DEB_CABAL_PACKAGE = summarize-ssh-keys
+%:
+	dh $@
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/hlibrary.mk
+override_dh_auto_configure:
+	-cabal sandbox init
+	cabal configure --global --prefix=/usr
 
-build/summarize-ssh-keys:: build-ghc-stamp
+override_dh_auto_build:
+	cabal build
+
+PACKAGE = $(shell dh_listpackages)
+TMP     = $(CURDIR)/debian/$(PACKAGE)
+
+override_dh_auto_install:
+	cabal copy --destdir=$(TMP)
+
+override_dh_auto_clean:
+	cabal clean
