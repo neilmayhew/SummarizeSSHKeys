@@ -1,3 +1,5 @@
+{-# LANGUAGE CPP #-}
+
 module SSHKeys where
 
 import QuietTesting
@@ -6,6 +8,12 @@ import Control.Applicative ((<*), (<*>), (*>), (<$>))
 import Data.Char
 import Test.HUnit
 import Text.Parsec hiding (Line)
+import Text.Parsec.Error
+
+#if !MIN_VERSION_parsec(3,1,9)
+instance Eq ParseError where
+    l == r = errorPos l == errorPos r && errorMessages l == errorMessages r
+#endif
 
 file = line `sepEndBy` newline <* eof
 
