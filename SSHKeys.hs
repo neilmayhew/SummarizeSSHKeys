@@ -2,6 +2,7 @@ module SSHKeys where
 
 import QuietTesting
 
+import Control.Applicative ((<*), (<*>), (*>), (<$>))
 import Data.Char
 import Test.HUnit
 import Text.Parsec hiding (Line)
