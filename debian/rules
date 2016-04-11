@@ -1,4 +1,8 @@
 #!/usr/bin/make -f
 
-%:
-	dh $@ --buildsystem=haskell
+DEB_CABAL_PACKAGE = summarize-ssh-keys
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/hlibrary.mk
+
+build/summarize-ssh-keys:: build-ghc-stamp
