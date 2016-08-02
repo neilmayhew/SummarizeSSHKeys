@@ -93,5 +93,7 @@ testResult = Right
     , Entry ([("opt-1",Nothing),("opt2",Nothing)], "ssh-dsa","AAAAAAAA","me@somewhere OK?")
     , Entry ([("opt-1",Just "a value"),("opt2",Nothing)], "ssh-dsa","AAAAAAAA","me@somewhere OK?") ]
 
-runTests = runTestTTquiet $ test
+tests = test
     [ parseFile "testData" testData ~?= testResult ]
+
+runTests = runTestTTquiet tests
