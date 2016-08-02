@@ -30,7 +30,34 @@ The meaning of the columns is as follows:
 3. The last 10 characters of the key hash (with trailing `=`s removed)
 4. The content of the comment field
 
-**Tip:** When checking for the  presence of a particular key, first run the key itself (the `.pub` file) through `summarize-ssh-keys` to discover its abbreviated value. Then look for that string in the summary of `authorized_keys`.
+Examples
+--------
+
+Basic usage:
+
+```
+summarize-ssh-keys <~/.ssh/authorized_keys
+```
+
+Checking the keys for someone else's account:
+
+```
+sudo cat ~another/.ssh/authorized_keys | summarize-ssh-keys
+```
+
+Checking the keys for an account on a remote machine:
+
+```
+ssh someone@somewhere cat .ssh/authorized_keys | summarize-ssh-keys
+```
+
+When visually checking for the  presence of a particular key, first run the key itself through `summarize-ssh-keys` to discover its abbreviated value, so you can look for that string in summaries:
+
+```
+summarize-ssh-keys <~/.ssh/id_rsa.pub
+```
+
+Note that it's not necessary to build and install `summarize-ssh-keys` outside your own account on your own workstation. Because it takes its input from `stdin` you can use it in a pipe with some other command that can read the file in question.
 
 Building
 --------
