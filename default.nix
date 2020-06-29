@@ -1,10 +1,10 @@
-{ stdenv, mkDerivation,
+{ stdenv, lib, mkDerivation,
     base, HUnit, parsec
 }:
 mkDerivation {
   pname = "SummarizeSSHKeys";
   version = "1.0.0.0";
-  src = ./.;
+  src = lib.cleanSource ./.;
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [
