@@ -1,4 +1,4 @@
-{ stdenv, lib, mkDerivation,
+{ lib, mkDerivation,
     base, HUnit, parsec
 }:
 mkDerivation {
@@ -12,5 +12,5 @@ mkDerivation {
   ];
   homepage = "https://github.com/neilmayhew/SummarizeSSHKeys";
   description = "A utility to produce readable summaries of SSH authorized_keys files";
-  license = stdenv.lib.licenses.mit;
+  license = lib.licenses.mit;
 }
