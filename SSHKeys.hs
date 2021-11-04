@@ -4,11 +4,9 @@ module SSHKeys where
 
 import QuietTesting
 
-import Control.Applicative ((<*), (<*>), (*>), (<$>))
 import Data.Char
 import Test.HUnit
 import Text.Parsec hiding (Line)
-import Text.Parsec.Error
 
 #if !MIN_VERSION_parsec(3,1,9)
 instance Eq ParseError where
@@ -40,11 +38,11 @@ emptyLine = const EmptyLine <$> try (spaces' *> lookAhead newline)
 entry :: Parser Line
 entry = do
     o <- options
-    spaces'
+    _ <- spaces'
     k <- kind
-    spaces'
+    _ <- spaces'
     h <- hash
-    spaces'
+    _ <- spaces'
     c <- comment
     return $ Entry (o, k, h, c)
 
@@ -56,7 +54,7 @@ setting = do
     notFollowedBy kind
     key <- many1 (alphaNum <|> char '-') <?> "option name"
     value <- optionMaybe $ do
-        char '='
+        _ <- char '='
         between (char '"') (char '"') (anyChar `manyTill` lookAhead (char '"'))
             <|> anyChar `manyTill` lookAhead (space <|> comma)
     return (key, value)
@@ -64,7 +62,7 @@ setting = do
 kind :: Parser String
 kind = do
     base <- string "ssh" <|> string "ecdsa"
-    char '-'
+    _ <- char '-'
     rest <- many1 nonSpace
     return $ base ++ "-" ++ rest
   <?> "key kind"

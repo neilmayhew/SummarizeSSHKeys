@@ -1,7 +1,6 @@
 import SSHKeys
 
 import Control.Monad
-import Data.Functor
 import System.IO
 import System.Exit
 import Text.Printf
@@ -13,8 +12,8 @@ main = do
         Left e -> do
             hPutStrLn stderr (show e)
             exitFailure
-        Right lines -> do
-            forM_ lines $ \l -> do
+        Right ls -> do
+            forM_ ls $ \l -> do
                 case l of
                     Entry (o, k, h, c) ->
                         putStrLn $ printf "%s %-7s %-10s %s" (summOpts o) (summKind k) (summHash h) c

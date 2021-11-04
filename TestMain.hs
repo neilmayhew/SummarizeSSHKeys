@@ -11,6 +11,6 @@ alltests = test
     [ "SSHKeys" ~: S.tests ]
 
 main :: IO ()
-main = do counts <- runTestTT alltests
-          when ((errors counts, failures counts) /= (0, 0)) $
+main = do results <- runTestTT alltests
+          when ((errors results, failures results) /= (0, 0)) $
               exitWith (ExitFailure 1)
