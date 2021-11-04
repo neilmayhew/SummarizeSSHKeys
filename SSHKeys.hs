@@ -33,7 +33,7 @@ commentLine :: Parser Line
 commentLine = Comment <$> try (spaces' *> char '#' *> comment)
 
 emptyLine :: Parser Line
-emptyLine = const EmptyLine <$> try (spaces' *> lookAhead newline)
+emptyLine = EmptyLine <$ try (spaces' *> lookAhead newline)
 
 entry :: Parser Line
 entry = do

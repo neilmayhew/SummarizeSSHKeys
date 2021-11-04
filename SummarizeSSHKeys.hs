@@ -10,7 +10,7 @@ main = do
     result <- parseFile "-" <$> getContents
     case result of
         Left e -> do
-            hPutStrLn stderr (show e)
+            hPrint stderr e
             exitFailure
         Right ls -> do
             forM_ ls $ \l -> do
