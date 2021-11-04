@@ -1,3 +1,5 @@
+{-# LANGUAGE LambdaCase #-}
+
 import SSHKeys
 
 import Control.Monad
@@ -13,12 +15,11 @@ main = do
             hPrint stderr e
             exitFailure
         Right ls -> do
-            forM_ ls $ \l -> do
-                case l of
-                    Entry (o, k, h, c) ->
-                        putStrLn $ printf "%s %-7s %-10s %s" (summOpts o) (summKind k) (summHash h) c
-                    _ ->
-                        return ()
+            forM_ ls $ \case
+                Entry (o, k, h, c) ->
+                    putStrLn $ printf "%s %-7s %-10s %s" (summOpts o) (summKind k) (summHash h) c
+                _ ->
+                    return ()
 
 summOpts :: [Option] -> String
 summOpts o = printf "[%d]" $ length o
