@@ -16,7 +16,7 @@ main = do
             forM_ lines $ \l -> do
                 case l of
                     Entry (o, k, h, c) ->
-                        putStrLn $ printf "%s %-5s %-10s %s" (summOpts o) (summKind k) (summHash h) c
+                        putStrLn $ printf "%s %-7s %-10s %s" (summOpts o) (summKind k) (summHash h) c
                     _ ->
                         return ()
 
