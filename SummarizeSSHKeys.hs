@@ -6,6 +6,7 @@ import System.IO
 import System.Exit
 import Text.Printf
 
+main :: IO ()
 main = do
     result <- parseFile "-" <$> getContents
     case result of
@@ -20,8 +21,10 @@ main = do
                     _ ->
                         return ()
 
-summOpts o = printf "[%d]" $ length o :: String
+summOpts :: [Option] -> String
+summOpts o = printf "[%d]" $ length o
 
+summKind :: String -> String
 summKind k =
     case prefix of
         "ssh" -> suffix
@@ -30,4 +33,5 @@ summKind k =
     (prefix, rest) = span (/= '-') k
     suffix = drop 1 rest
 
+summHash :: String -> String
 summHash = reverse . take 10 . dropWhile (== '=') . reverse
