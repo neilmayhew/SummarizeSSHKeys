@@ -1,5 +1,5 @@
 { lib, mkDerivation,
-    base, HUnit, parsec
+    base, HUnit, parsec, optparse-applicative, terminal-size
 }:
 mkDerivation {
   pname = "SummarizeSSHKeys";
@@ -8,7 +8,7 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [
-    base  HUnit  parsec
+    base  HUnit  parsec  optparse-applicative  terminal-size
   ];
   homepage = "https://github.com/neilmayhew/SummarizeSSHKeys";
   description = "A utility to produce readable summaries of SSH authorized_keys files";

@@ -1,15 +1,42 @@
+{-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE RecordWildCards #-}
 
 import SSHKeys
 
 import Control.Monad
-import System.IO
+import Data.Foldable
+import Options.Applicative
 import System.Exit
+import System.IO
 import Text.Printf
+
+import qualified System.Console.Terminal.Size as TS
+
+data Options = Options
+  { optFiles :: [FilePath]
+  } deriving (Show)
 
 main :: IO ()
 main = do
-    result <- parseFile "-" <$> getContents
+
+  cols <- maybe 100 TS.width <$> TS.size
+
+  Options {..} <- customExecParser
+    ( prefs $ columns cols )
+    ( info
+      ( helper <*> do
+          let strArguments mods = (:) <$> strArgument mods <*> many (strArgument mempty)
+          optFiles <- strArguments $
+            metavar "KEYSFILE ..." <> value "/dev/stdin" <>
+            help "Files containing SSH public keys" <> showDefaultWith id
+          pure Options{..}
+      )
+      ( fullDesc <> header "Output readable summaries of SSH authorized_keys files" )
+    )
+
+  for_ optFiles $ \f -> do
+    result <- parseFile f <$> readFile f
     case result of
         Left e -> do
             hPrint stderr e
