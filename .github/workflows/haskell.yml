@@ -13,7 +13,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ghc: ['8.8.4', '8.10.7', '9.0.2', '9.2.4']
 
+    name: Build with GHC ${{ matrix.ghc }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -31,7 +35,9 @@ jobs:
           ${{ runner.os }}-
 
     - name: Haskell setup
-      uses: haskell/actions/setup@v1.2
+      uses: haskell/actions/setup@main
+      with:
+        ghc-version: ${{ matrix.ghc }}
 
     - name: Install dependencies
       run: |
